@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry excluding="src/" kind="src" path=""/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="/Users/Greg/Documents/workspace/serenity/spark-core-2.0.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Greg/Documents/workspace/serenity/slf4j-api-1.7.7.jar"/>
+	<classpathentry kind="lib" path="/Users/Greg/Documents/workspace/serenity/jetty-server-9.2.5.v20141112.jar"/>
+	<classpathentry kind="lib" path="/Users/Greg/Documents/workspace/serenity/jetty-util-9.2.5.v20141112.jar"/>
+	<classpathentry kind="lib" path="/Users/Greg/Documents/workspace/serenity/javax.servlet-api-3.1.0.jar"/>
+	<classpathentry kind="lib" path="/Users/Greg/Documents/workspace/serenity/jetty-io-9.2.5.v20141112.jar"/>
+	<classpathentry kind="lib" path="/Users/Greg/Documents/workspace/serenity/jetty-http-9.2.5.v20141112.jar"/>
+	<classpathentry kind="lib" path="/Users/Greg/Documents/workspace/serenity/jackson-annotations-2.4.3.jar"/>
+	<classpathentry kind="lib" path="/Users/Greg/Documents/workspace/serenity/jackson-core-2.4.3.jar"/>
+	<classpathentry kind="lib" path="/Users/Greg/Documents/workspace/serenity/jackson-databind-2.4.3.jar"/>
+	<classpathentry kind="lib" path="/Users/Greg/Documents/workspace/serenity/pi4j-core.jar"/>
+	<classpathentry kind="lib" path="/Users/Greg/Documents/workspace/serenity/pi4j-device.jar"/>
+	<classpathentry kind="lib" path="/Users/Greg/Documents/workspace/serenity/pi4j-gpio-extension.jar"/>
+	<classpathentry kind="lib" path="/Users/Greg/Documents/workspace/serenity/pi4j-service.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,15 @@
+jackson-annotations-2.4.3.jar
+jackson-core-2.4.3.jar
+jackson-databind-2.4.3.jar
+javax.servlet-api-3.1.0.jar
+jetty-http-9.2.5.v20141112.jar
+jetty-io-9.2.5.v20141112.jar
+jetty-server-9.2.5.v20141112.jar
+jetty-util-9.2.5.v20141112.jar
+junit.jar
+pi4j-core.jar
+pi4j-device.jar
+pi4j-gpio-extension.jar
+pi4j-service.jar
+slf4j-api-1.7.7.jar
+spark-core-2.0.0.jar

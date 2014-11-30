@@ -1,0 +1,43 @@
+The Plan(tm)
+
+-- SETUP --
+
+1  [ * ] -- Acquire Pi
+
+5  [   ] -- Acquire USB hub
+
+2  [   ] -- Acquire 4GB MicroSD card + writer
+
+6  [   ] -- Acquire (or try my) USB wifi module
+
+8  [   ] -- Acquire temperature sensor
+
+9  [   ] -- Acquire RS485 module
+
+
+-- CONFIGURATION --
+
+3  [   ] -- Burn Raspian onto MicroSD
+
+4  [   ] -- Confirm clean boot with just keyboard/screen
+
+7  [   ] -- Get wifi working
+
+8  [   ] -- Install Serenity and confirm working (accessible on/off-board)
+
+10 [   ] -- Install temperature sensor
+
+11 [   ] -- Confirm Pi4J can read temps
+
+12 [   ] -- Install RS485 module
+
+13 [   ] -- Send manual signals to control motor speed
+
+
+-- LAUNCH --
+
+14 [   ] -- Hook everything up (Serenity driving motor)
+
+15 [   ] -- Figure out powering Pi on pump (tap existing module? pin on board?)
+
+16 [   ] -- Figure out packaging
