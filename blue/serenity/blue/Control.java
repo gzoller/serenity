@@ -2,6 +2,8 @@ package serenity.blue;
 
 public class Control {
 	public int		version			= 1;
+	public String	product			= "blue";  // pool pump control
+	public String	brand			= "Hayward";  // only brand supported currently
 	public int      utcOffsetSec    = 0; 
 	public int[]	schedule		= new int[24];
 	public int		overrideSpeed1	= 1;
