@@ -1,4 +1,4 @@
-package serenity;
+package serenity.blue;
 
 public class FreezeChecker implements Runnable {
 

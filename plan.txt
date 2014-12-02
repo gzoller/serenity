@@ -1,35 +1,37 @@
 The Plan(tm)
 
+Logo Font: Papyrus
+
 -- SETUP --
 
 1  [ * ] -- Acquire Pi
 
-5  [   ] -- Acquire USB hub
+5  [ * ] -- Acquire USB hub
 
-2  [   ] -- Acquire 4GB MicroSD card + writer
+2  [ * ] -- Acquire 4GB MicroSD card + writer
 
-6  [   ] -- Acquire (or try my) USB wifi module
+6  [ * ] -- Acquire (or try my) USB wifi module
 
 8  [   ] -- Acquire temperature sensor
 
-9  [   ] -- Acquire RS485 module
+9  [ * ] -- Acquire RS485 module
 
 
 -- CONFIGURATION --
 
-3  [   ] -- Burn Raspian onto MicroSD
+3  [ * ] -- Burn Raspian onto MicroSD
 
-4  [   ] -- Confirm clean boot with just keyboard/screen
+4  [ * ] -- Confirm clean boot with just keyboard/screen
 
-7  [   ] -- Get wifi working
+7  [ * ] -- Get wifi working
 
-8  [   ] -- Install Serenity and confirm working (accessible on/off-board)
+8  [ * ] -- Install Serenity and confirm working (accessible on/off-board)
 
-10 [   ] -- Install temperature sensor
+10 [ - ] -- Install temperature sensor
 
-11 [   ] -- Confirm Pi4J can read temps
+11 [ - ] -- Confirm Pi4J can read temps
 
-12 [   ] -- Install RS485 module
+12 [ * ] -- Install RS485 module
 
 13 [   ] -- Send manual signals to control motor speed
 

@@ -1,4 +1,4 @@
-package serenity;
+package serenity.blue;
 
 import static spark.Spark.*;
 import com.fasterxml.jackson.databind.*;
@@ -9,6 +9,9 @@ import java.util.*;
 import java.text.SimpleDateFormat;
 
 /*
+ *  Serentiy Blue is a wifi-enabled, app-driven pool pump controller
+ *  for Hayward variable speed pumps.
+ *  
  *  get(SERENITY+"/control")
  *  post(SERENITY+"/reset")
  *  put(SERENITY+"/control/schedule") -- payload: 24 ints between 0 and 7 inclusive
@@ -16,7 +19,7 @@ import java.text.SimpleDateFormat;
  *  put(SERENITY+"/motor/start?speed=<Int0to7>") 
  *  put(SERENITY+"/motor/stop")
  *  put(SERENITY+"/resume")
- *  put(SERENITY+"/location?zip=<zip>")
+ *  put(SERENITY+"/location?zip=<zip>&tz=<utc_offset_in_sec>")
  */
 
 public class Rest {
@@ -35,23 +38,29 @@ public class Rest {
 	
 	Control getControl() { return ctl; }
 	
+    public static void main(String[] args) {
+    	new Rest();
+    }
+    
 	public Rest() {
+		
     	// Load or create the Control object
-    	try {
+		try {
     		ctl = mapper.readValue(new File(CTL_FILE), Control.class);
     	} catch ( Exception e ) {
     		reset(); // Something bad happened... reset and re-write control file
     	}
-    	checkFreeze();
    	
     	// Start the threaded services
-    	ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    	scheduler.scheduleAtFixedRate(new MotorRunner(this),   ONE_SECOND, MOTOR_PERIOD_MS, TimeUnit.MILLISECONDS);
-    	scheduler.scheduleAtFixedRate(new MotorChecker(this),  ONE_SECOND, FIVE_MINUTES,    TimeUnit.MILLISECONDS);
-    	scheduler.scheduleAtFixedRate(new FreezeChecker(this), ONE_SECOND, TWO_HOURS*6,     TimeUnit.MILLISECONDS);
+    	ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(3);
+    	if( ctl.zip != "" ) startServices(scheduler);
     	 
     	// RESTful service
     	//----------------
+
+    	//------------------
+    	//  GET
+    	//------------------
     	get(SERENITY+"/control", (req, res) -> {
 	    	try { 
 	    		res.type("application/json");
@@ -61,7 +70,10 @@ public class Rest {
 	    		throw new IllegalArgumentException(je);
 	    	}
     	});
-    	
+    	    	
+    	//------------------
+    	//  POST
+    	//------------------
     	post(SERENITY+"/reset", (req, res) -> {
     		reset();
     		return "OK";
@@ -146,13 +158,19 @@ public class Rest {
     	put(SERENITY+"/location", (req, res) -> {
     		try {
     			String zip = req.queryParams("zip");
+    			String tz = req.queryParams("tz");
+    			boolean needToStartServices = false;
+    			if( ctl.zip == "" ) needToStartServices = true;
     			ctlwrite.acquire();
     			ctl.zip = zip;
+    			ctl.utcOffsetSec = Integer.parseInt(tz);
     			writeControl(ctl);
-    			checkFreeze();
+    			if( needToStartServices ) startServices(scheduler);
     			return "OK";
 			} catch( InterruptedException ie ) {
 				throw new IllegalArgumentException(ie);
+			} catch( Exception e ) {
+				throw new IllegalArgumentException(e);				
 			}
     	});
 
@@ -162,9 +180,11 @@ public class Rest {
     	});
     }
 	
-    public static void main(String[] args) {
-    	new Rest();
-    }
+	private void startServices(ScheduledExecutorService scheduler) {
+    	scheduler.scheduleAtFixedRate(new MotorRunner(this),   ONE_SECOND, MOTOR_PERIOD_MS, TimeUnit.MILLISECONDS);
+    	scheduler.scheduleAtFixedRate(new MotorChecker(this),  ONE_SECOND, FIVE_MINUTES,    TimeUnit.MILLISECONDS);
+    	scheduler.scheduleAtFixedRate(new FreezeChecker(this), ONE_SECOND, TWO_HOURS*6,     TimeUnit.MILLISECONDS);
+	}
     
     private void reset() {
 		ctl = new Control();
@@ -199,7 +219,9 @@ public class Rest {
 		if( ctl.isManual && System.currentTimeMillis() - ctl.manualTime > TWO_HOURS ) 
 			resume();
 		else {
-			Calendar cal = Calendar.getInstance();
+			TimeZone tz = TimeZone.getDefault();
+			tz.setRawOffset(ctl.utcOffsetSec*1000);
+			Calendar cal = Calendar.getInstance(tz);
 			int hour = cal.get(Calendar.HOUR_OF_DAY);
 			int schedSpeed = ctl.schedule[hour];
 			if( ctl.forecastTemps[hour] <= ctl.freezeTemp1F ) 
@@ -209,9 +231,9 @@ public class Rest {
 			try {
 				ctlwrite.acquire();
 				ctl.motorSpeed = schedSpeed;
-				Calendar c = Calendar.getInstance();
-				c.setTime( new Date() );
-				ctl.currentHour = c.get(Calendar.HOUR_OF_DAY);
+//				Calendar c = Calendar.getInstance();
+//				c.setTime( new Date() );
+				ctl.currentHour = cal.get(Calendar.HOUR_OF_DAY);
 				writeControl(ctl);
 			} catch( InterruptedException ie ) {
 			}
@@ -220,12 +242,14 @@ public class Rest {
 	
 	void checkFreeze() {
 		String fromTime = DATE_FORMAT.format( new Date() );
-		Calendar c = Calendar.getInstance();
+		TimeZone tz = TimeZone.getDefault();
+		tz.setRawOffset(ctl.utcOffsetSec*1000);
+		Calendar c = Calendar.getInstance(tz);
 		c.setTime( new Date() );
 		c.add(Calendar.HOUR, 23);
 		String toTime = DATE_FORMAT.format(c.getTime());
 		String zip = ctl.zip;
-		if( zip == "" ) zip = "75019"; // defualt zip -- hasn't been set yet
+//		if( zip == "" ) zip = "75019"; // defualt zip -- hasn't been set yet
 		String url = String.format(NWS_URL, zip, fromTime, toTime);
 		TimeTemps tt = Util.parseNWSTemps(url);
 		try {

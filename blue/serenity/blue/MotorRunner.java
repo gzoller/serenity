@@ -1,4 +1,4 @@
-package serenity;
+package serenity.blue;
 
 import com.pi4j.io.serial.Serial;
 import com.pi4j.io.serial.SerialDataEvent;

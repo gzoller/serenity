@@ -1,7 +1,4 @@
-package serenity;
-
-import java.net.*;
-import java.io.*;
+package serenity.blue;
 
 import javax.xml.parsers.DocumentBuilder; 
 import javax.xml.parsers.DocumentBuilderFactory;
